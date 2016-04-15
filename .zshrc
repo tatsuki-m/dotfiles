@@ -20,7 +20,11 @@ fi
 # Path to your oh-my-zsh installation.
 source $ZSH/oh-my-zsh.sh
 
-# Plugins
+# go setting
+export GOPATH=$HOME/go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
+
+ #Plugins
 plugins=(git rails osx bundle brew rails emoji-clock)
 
 # Histroy
