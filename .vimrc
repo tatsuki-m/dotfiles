@@ -2,6 +2,7 @@ set encoding=utf8
 syntax on
 set background=dark
 filetype plugin indent on
+filetype plugin on
 
 "==========display==========
 set number		" show line number 
@@ -68,7 +69,7 @@ function! s:LoadBundles()
   NeoBundle 'szw/vim-tags'
   NeoBundle 'supermomonga/neocomplete-rsense.vim'
   NeoBundle 'scrooloose/syntastic'
-  NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
+"  NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
 
   if has('lua')
     NeoBundleLazy 'Shougo/neocomplete', {
@@ -94,6 +95,11 @@ function! s:LoadBundles()
   NeoBundle 'jpo/vim-railscasts-theme'
   NeoBundle 'altercation/vim-colors-solarized'
   NeoBundle 'vim-scripts/rdark'
+  " go
+  NeoBundle 'fatih/vim-go'
+  NeoBundle 'vim-jp/vim-go-extra'
+  NeoBundle 'scrooloose/syntastic'
+  
 
   " plugin settings
   " for Unite
@@ -155,3 +161,13 @@ end
 autocmd VimEnter * execute 'NERDTree'
 autocmd QuickFixCmdPost *grep* cwindow
 
+"Go
+let g:go_disable_autoinstall = 0
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:syntastic_mode_map = { 'mode': 'passive',
+    \ 'active_filetypes': ['go'] }
+let g:syntastic_go_checkers = ['go', 'golint']
