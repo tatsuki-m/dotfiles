@@ -138,30 +138,57 @@ endfunction
 call s:InitNeoBundle()
 
 " settings neocomplete
-if neobundle#is_installed('neocomplete')
+if neobundle#tap('neocomplete')
+  call neobundle#config({
+  \   'depends': ['Shougo/context_filetype.vim', 'ujihisa/neco-look', 'pocke/neco-gh-issues', 'Shougo/neco-syntax'],
+  \ })
+
   let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_ignore_case = 1
   let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#force_overwrite_completefunc = 1
+  let g:neocomplete#enable_underbar_completion = 1
+  let g:neocomplete#enable_camel_case_completion  =  1
+  let g:neocomplete#max_list = 20
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#auto_completion_start_length = 2
+  let g:neocomplete#enable_auto_close_preview = 0
+  let g:neocomplete#max_keyword_width = 10000
 
-  if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+  if !exists('g:neocomplete#delimiter_patterns')
+    let g:neocomplete#delimiter_patterns= {}
   endif
+  let g:neocomplete#delimiter_patterns.ruby = ['::']
 
-  let g:neocomplete#keyword_patterns._ = '\h\w*'
+  if !exists('g:neocomplete#same_filetypes')
+    let g:neocomplete#same_filetypes = {}
+  endif
 
   if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
   endif
-  let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-end
+
+  let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+  let g:neocomplete#force_omni_input_patterns.typescript = '[^. \t]\.\%(\h\w*\)\?' " Same as JavaScript
+  let g:neocomplete#force_omni_input_patterns.go = '[^. \t]\.\%(\h\w*\)\?'         " Same as JavaScript
+
+  let s:neco_dicts_dir = $HOME . '/dicts'
+  if isdirectory(s:neco_dicts_dir)
+    let g:neocomplete#sources#dictionary#dictionaries = {
+          \   'ruby': s:neco_dicts_dir . '/ruby.dict',
+          \   'javascript': s:neco_dicts_dir . '/jquery.dict',
+          \ }
+  endif
+  let g:neocomplete#data_directory = $HOME . '/.vim/cache/neocomplete'
+  call neocomplete#custom#source('look', 'min_pattern_length', 1)
+
+  call neobundle#untap()
+endif
 
 autocmd VimEnter * execute 'NERDTree'
 autocmd QuickFixCmdPost *grep* cwindow
 
 "Go
+set runtimepath+=$GOROOT/misc/vim
+
 let g:go_disable_autoinstall = 0
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -171,3 +198,8 @@ let g:go_highlight_build_constraints = 1
 let g:syntastic_mode_map = { 'mode': 'passive',
     \ 'active_filetypes': ['go'] }
 let g:syntastic_go_checkers = ['go', 'golint']
+
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+set completeopt=menu,preview
+
