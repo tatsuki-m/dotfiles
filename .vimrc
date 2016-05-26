@@ -80,7 +80,7 @@ function! s:LoadBundles()
      \}
   endif
 
-  " colorschemes
+ " colorschemes
   NeoBundle 'ujihisa/unite-colorscheme'
   NeoBundle 'nanotech/jellybeans.vim'
   NeoBundle 'w0ng/vim-hybrid'
@@ -94,12 +94,15 @@ function! s:LoadBundles()
   NeoBundle 'w0ng/vim-hybrid'
   NeoBundle 'jpo/vim-railscasts-theme'
   NeoBundle 'altercation/vim-colors-solarized'
+  
   NeoBundle 'vim-scripts/rdark'
   " go
   NeoBundle 'fatih/vim-go'
   NeoBundle 'vim-jp/vim-go-extra'
   NeoBundle 'scrooloose/syntastic'
-  
+
+ "typescript
+ NeoBundle 'leafgarland/typescript-vim'
 
   " plugin settings
   " for Unite
@@ -142,7 +145,12 @@ if neobundle#tap('neocomplete')
   call neobundle#config({
   \   'depends': ['Shougo/context_filetype.vim', 'ujihisa/neco-look', 'pocke/neco-gh-issues', 'Shougo/neco-syntax'],
   \ })
-
+  " < TAB >: completion
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-y>  neocomplcache#close_popup()
+  inoremap <expr><C-e>  neocomplcache#cancel_popup()
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
   let g:neocomplete#enable_underbar_completion = 1
