@@ -70,6 +70,15 @@ function! s:LoadBundles()
   NeoBundle 'supermomonga/neocomplete-rsense.vim'
   NeoBundle 'scrooloose/syntastic'
 "  NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
+  NeoBundle 'Shougo/vimproc.vim', {
+        \ 'build' : {
+        \     'windows' : 'tools\\update-dll-mingw',
+        \     'cygwin' : 'make -f make_cygwin.mak',
+        \     'mac' : 'make -f make_mac.mak',
+        \     'linux' : 'make',
+        \     'unix' : 'gmake',
+        \    },
+        \ }
 
   if has('lua')
     NeoBundleLazy 'Shougo/neocomplete', {
@@ -102,7 +111,17 @@ function! s:LoadBundles()
   NeoBundle 'scrooloose/syntastic'
 
  "typescript
- NeoBundle 'leafgarland/typescript-vim'
+  NeoBundle 'Quramy/tsuquyomi'
+
+ "coffeescript
+ NeoBundle 'kchmck/vim-coffee-script'
+ NeoBundle 'claco/jasmine.vim'
+ NeoBundle 'nathanaelkane/vim-indent-guides'
+
+ " react
+ NeoBundle 'pangloss/vim-javascript'
+ NeoBundle 'mxw/vim-jsx'
+ let g:jsx_ext_required = 0
 
   " plugin settings
   " for Unite
@@ -148,7 +167,6 @@ if neobundle#tap('neocomplete')
   " < TAB >: completion
   inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
   " <C-h>, <BS>: close popup and delete backword char.
-  inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
   inoremap <expr><C-y>  neocomplcache#close_popup()
   inoremap <expr><C-e>  neocomplcache#cancel_popup()
   let g:neocomplete#enable_at_startup = 1
@@ -211,3 +229,6 @@ autocmd FileType go autocmd BufWritePre <buffer> Fmt
 exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
 set completeopt=menu,preview
 
+"TypeScript
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
