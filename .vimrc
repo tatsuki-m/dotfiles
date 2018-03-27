@@ -65,7 +65,6 @@ function! s:LoadBundles()
   NeoBundle 'ujihisa/unite-rake'
   NeoBundle 'tpope/vim-endwise'
   NeoBundle 'thinca/vim-ref'
-  NeoBundle 'slim-template/vim-slim'
   NeoBundle 'szw/vim-tags'
   NeoBundle 'supermomonga/neocomplete-rsense.vim'
   NeoBundle 'scrooloose/syntastic'
